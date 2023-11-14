@@ -7,6 +7,7 @@ use App\Models\Type;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Controllers\Controller;
+use App\Models\Technology;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -28,7 +29,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projecs.create', compact('types'));
+        $technologies = Technology::all();
+        return view('admin.projecs.create', compact('types', 'technologies'));
     }
 
     /**
@@ -46,8 +48,10 @@ class ProjectController extends Controller
             $data['cover_image'] = $imagePath;
         }
         $data['url_view'] = $request->input('url_view');
-        Project::create($data);
-        return to_route('admin.projects.index')->with('message', 'creato');
+        $project = Project::create($data);
+        $project->technologies()->attach($request->technologies);
+
+        return to_route('admin.projects.index')->with('message', 'create');
     }
 
 
@@ -69,7 +73,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projecs.edit', compact('project', 'types'));
+        $technologies = Technology::all();
+        return view('admin.projecs.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -89,6 +94,10 @@ class ProjectController extends Controller
             $request->file('cover_image')->storeAs('public/', $imagePath);
             $data['cover_image'] = $imagePath;
         }
+        if ($request->has('technologies')) {
+
+            $project->technologies()->sync($data['technologies']);
+        }
 
         $project->update($data);
         return to_route('admin.projects.index')->with('message', 'creato');
@@ -102,6 +111,7 @@ class ProjectController extends Controller
         if (!is_null($project->posts_images)) {
             Storage::delete($project->posts_images);
         }
+        $project->technologies()->detach();
         $project->delete();
         return to_route('admin.projects.index')->with('message', 'creato');
     }
