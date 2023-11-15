@@ -119,9 +119,15 @@
                 @enderror
             </div>
             <div class="mb-3">
+
                 <label for="cover_image" class="form-label">Choose file</label>
-                <input type="file" class="form-control" name="cover_image" id="cover_image" placeholder=""
-                    aria-describedby="cover_image_helper">
+
+
+                <div class="d-flex gap-3 align-items-center">
+                    <img style="width: 50px" src="{{ asset('storage/' . $project->cover_image) }}" alt="">
+                    <input type="file" class="form-control" name="cover_image" id="cover_image" placeholder=""
+                        aria-describedby="cover_image_helper">
+                </div>
                 <div id="cover_image_helper" class="form-text">Upload an image for the current product</div>
             </div>
             <button type="submit" class="btn btn-primary">

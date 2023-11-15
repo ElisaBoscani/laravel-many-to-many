@@ -27,7 +27,8 @@ class StoreProjectRequest extends FormRequest
             'cover_image' => 'nullable|max:255',
             'url_git' => 'required|nullable',
             'url_view' => 'nullable',
-            'type_id' => 'required|nullable'
+            'type_id' => 'required|nullable',
+            'technologies' => 'required|nullable|array',
         ];
     }
     public function messages()
@@ -36,7 +37,8 @@ class StoreProjectRequest extends FormRequest
             'title.required' => 'Title is required.',
             'content.required' => 'Description is required',
             'url_git.require' => 'url in required',
-            'type_id' => 'Select type'
+            'type_id' => 'Select type',
+            'technologies' => 'Select at least one technology'
         ];
     }
 }

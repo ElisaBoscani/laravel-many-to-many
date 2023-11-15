@@ -31,7 +31,7 @@ class UpdateProjectRequest extends FormRequest
             'url_git' => 'required|nullable',
             'url_view' => 'nullable',
             'type_id' => 'required|nullable',
-            'technologies' => 'required|nullable',
+            'technologies' => 'required|nullable|array',
         ];
     }
     public function messages()
